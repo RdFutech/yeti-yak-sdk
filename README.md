@@ -6,7 +6,7 @@ Create a folder (e.g. yeti-yak) where everything will be placed.
 ```
 mkdir yeti-yak
 cd yeti-yak
-git clone https://github.com/PionixPublic/yeti-yak-sdk.git -b kirkstone
+git clone git@github.com:diskgokey/yeti-yak-sdk.git -b kirkstone
 cd yeti-yak-sdk
 ```
 
