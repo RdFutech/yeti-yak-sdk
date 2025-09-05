@@ -13,7 +13,7 @@ LimitCORE=infinity
 ExecCondition=grep Compute /sys/firmware/devicetree/base/model
 WorkingDirectory=/usr/bin
 ExecStartPre=sleep 5
-ExecStart=/usr/bin/manager --conf /etc/everest/config-yeti-yak-pwm.yaml
+ExecStart=/usr/bin/manager --conf /etc/everest/config-futech.yaml
 
 [Install]
 WantedBy=multi-user.target

@@ -8,6 +8,7 @@ SRC_URI = "file://config-yeti-yak-rpi-pwm.yaml \
            file://config-yeti-yak-rpi-iso.yaml \
            file://config-yeti-yak-pwm.yaml \
            file://config-yeti-yak-iso.yaml \
+           file://config-futech.yaml \
            file://everest.service \
            file://everest-rpi.service \
            file://everest-bootlogo.service \
@@ -15,9 +16,7 @@ SRC_URI = "file://config-yeti-yak-rpi-pwm.yaml \
            "
 PV = "0.1"
 
-DEPENDS = " \
-    everest-core \
-    "
+RDEPENDS:${PN} += "everest-core everest-futech basecamp-futech"
 
 do_install() {
     install -d ${D}${systemd_system_unitdir}
@@ -31,6 +30,7 @@ do_install() {
     install -m 0644 ${WORKDIR}/config-yeti-yak-iso.yaml ${D}${sysconfdir}/everest/config-yeti-yak-iso.yaml
     install -m 0644 ${WORKDIR}/config-yeti-yak-rpi-pwm.yaml ${D}${sysconfdir}/everest/config-yeti-yak-rpi-pwm.yaml
     install -m 0644 ${WORKDIR}/config-yeti-yak-rpi-iso.yaml ${D}${sysconfdir}/everest/config-yeti-yak-rpi-iso.yaml
+    install -m 0644 ${WORKDIR}/config-futech.yaml ${D}${sysconfdir}/everest/config-futech.yaml
 }
 
 FILES:${PN} += "${datadir}/everest/* \
