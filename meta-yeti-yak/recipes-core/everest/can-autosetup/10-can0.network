@@ -1,0 +1,15 @@
+[Match]
+Name=can0
+
+[CAN]
+BitRate=500000
+RestartSec=100ms
+# Optioneel:
+TripleSampling=yes
+# SamplePoint=0.875
+# SJW=1
+# FDMode=yes
+# DBitRate=2000000
+
+[Link]
+RequiredForOnline=yes

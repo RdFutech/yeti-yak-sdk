@@ -3,9 +3,9 @@
 # Some settings may impact device functionality. See link above for details
 
 # Uncomment some or all of these to enable the optional hardware interfaces
-dtparam=i2c_arm=on
-dtparam=i2s=on
-dtparam=spi=on
+#dtparam=i2c_arm=on
+#dtparam=i2s=on
+#dtparam=spi=on
 
 # Enable audio (loads snd_bcm2835)
 dtparam=audio=off
@@ -32,7 +32,9 @@ disable_overscan=1
 # This line should be removed if the legacy DWC2 controller is required
 # (e.g. for USB device mode) or if USB support is not required.
 otg_mode=1
-dtoverlay=uart5
+#dtoverlay=uart5
+dtoverlay=uart1,txd1_pin=4,rxd1_pin=5
+dtoverlay=uart2
 dtoverlay=spi1-2cs
 dtoverlay=mcp2515-can0-spi1,oscillator=16000000,interrupt=24
 dtoverlay=tpm-slb9670-spi1
@@ -46,7 +48,7 @@ dtoverlay=disable-bt
 enable_uart=1
 dtoverlay=qca7000,speed=12000000
 dtoverlay=miniuart-bt
-dtoverlay=uart3
+#dtoverlay=uart3
 hdmi_group=2
 hdmi_mode=87
 hdmi_cvt=800 480 60 6 0 0 0

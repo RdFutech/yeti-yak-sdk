@@ -1,0 +1,7 @@
+[Match]
+Driver=qcaspi
+# Alternative, if you prefer path match:
+#Path=platform-fe204000.spi-cs-0
+
+[Link]
+Name=eth1

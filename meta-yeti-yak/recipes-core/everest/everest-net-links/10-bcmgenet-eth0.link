@@ -1,0 +1,8 @@
+[Match]
+# Either match by driver (simple)...
+Driver=bcmgenet
+# ...or uncomment this to match by path instead:
+#Path=platform-fd580000.ethernet
+
+[Link]
+Name=eth0

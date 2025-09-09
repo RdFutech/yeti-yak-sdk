@@ -1,0 +1,3 @@
+# Base hardening as you prefer …
+
+PermitRootLogin yes

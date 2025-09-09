@@ -43,6 +43,12 @@ CORE_IMAGE_EXTRA_INSTALL += "\
         nodejs \
         systemd-analyze \
         fbida \
+        openvpn \
+        can-utils \
+        everest-serial \
+        everest-net-links \
+        can-autosetup \
+        openvpn-client \
 	"
 
 COMPATIBLE_MACHINE = "^rpi$"
