@@ -9,7 +9,7 @@ inherit systemd
 # Voeg je eigen bestanden toe
 SRC_URI = " \
     file://ilucharge2.conf \
-    file://openvpn-myclient.service \
+    file://openvpn-futech.service \
 "
 
 S = "${WORKDIR}"
@@ -17,19 +17,17 @@ S = "${WORKDIR}"
 RDEPENDS:${PN} += "openvpn"
 
 do_install() {
-    # systemd service
-    install -d ${D}${sysconfdir}/openvpn
+    install -d ${D}${sysconfdir}/openvpn/client
     install -d ${D}${systemd_system_unitdir}
-    install -m 0644 ${WORKDIR}/openvpn-myclient.service ${D}${systemd_system_unitdir}/
-
-    install -m 0644 ${WORKDIR}/ilucharge2.conf ${D}${sysconfdir}/openvpn/
+    install -m 0644 ${WORKDIR}/openvpn-futech.service ${D}${systemd_system_unitdir}/
+    install -m 0644 ${WORKDIR}/ilucharge2.conf ${D}${sysconfdir}/openvpn/client/
 }
 
 FILES:${PN} += " \
-  ${sysconfdir}/openvpn/* \
-  ${systemd_system_unitdir}/openvpn-myclient.service \
+  ${sysconfdir}/openvpn/client/* \
+  ${systemd_system_unitdir}/openvpn-futech.service \
 "
 
-SYSTEMD_SERVICE:${PN} = "openvpn-myclient.service"
+SYSTEMD_SERVICE:${PN} = "openvpn-futech.service"
 SYSTEMD_AUTO_ENABLE:${PN} = "enable"
 

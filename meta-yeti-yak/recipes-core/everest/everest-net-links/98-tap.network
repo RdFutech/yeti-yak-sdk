@@ -1,0 +1,7 @@
+[Match]
+Name=tap*
+
+[Network]
+LinkLocalAddressing=no
+DHCP=no
+IPv6AcceptRA=no

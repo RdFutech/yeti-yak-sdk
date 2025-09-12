@@ -67,7 +67,7 @@ active_modules:
     module: iLuchargeBSP
     config_module:
       baud_rate: 115200
-      serial_port: /dev/serial0
+      serial_port: /dev/everest/ilucharge1_serial
       reset_pin: 27
     connections:
       evse_manager:
@@ -323,7 +323,7 @@ active_modules:
     module: SerialCommHub
     config_implementation:
       main:
-        serial_port: /dev/ttyAMA1
+        serial_port: /dev/everest/rs485_1
         rxtx_gpio_chip: gpiochip0
         rxtx_gpio_line: 16
         rxtx_gpio_tx_high: true
@@ -341,7 +341,7 @@ active_modules:
   token_provider_rfid:
     config_implementation:
       main:
-        serial_port: /dev/ttyAMA2
+        serial_port: /dev/everest/rfid_1
     connections: {}
     module: PN532TokenProvider
 x-module-layout: {}

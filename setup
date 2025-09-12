@@ -52,7 +52,7 @@ layers = [
         "remote": "github",
     },
     {
-        "rev": "d48c4684293649af94047db6c9b7af895ef3c4c8",
+        "rev": "a8522f82ecc0287660c64a30caa78c412aeb3b03",
         "branch": "scarthgap-futech",
         "repo": "RdFutech/meta-everest",
         "path": "meta-everest",

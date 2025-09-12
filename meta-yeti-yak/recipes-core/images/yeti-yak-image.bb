@@ -49,6 +49,9 @@ CORE_IMAGE_EXTRA_INSTALL += "\
         everest-net-links \
         can-autosetup \
         openvpn-client \
+        open-plc-utils \
+        libgpiod \
+        libgpiod-tools \
 	"
 
 COMPATIBLE_MACHINE = "^rpi$"
