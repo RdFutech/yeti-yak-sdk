@@ -52,6 +52,7 @@ CORE_IMAGE_EXTRA_INSTALL += "\
         open-plc-utils \
         libgpiod \
         libgpiod-tools \
+        wlan-init \
 	"
 
 COMPATIBLE_MACHINE = "^rpi$"
