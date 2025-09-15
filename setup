@@ -58,6 +58,20 @@ layers = [
         "path": "meta-everest",
         "remote": "github-ssh",
     },
+    {
+        "rev": "a0f4a8b9986954239850b9d4256c003c91e6b931",
+        "branch": "scarthgap",
+        "repo": "rauc/meta-rauc",
+        "path": "meta-rauc",
+        "remote": "github",
+    },
+    {
+        "rev": "3414ec68088044014dc635ecc90cfc460b148c96",
+        "branch": "scarthgap",
+        "repo": "diskgokey/meta-rauc-community",
+        "path": "meta-rauc-community",
+        "remote": "github-ssh",
+    },
 ]
 
 import os

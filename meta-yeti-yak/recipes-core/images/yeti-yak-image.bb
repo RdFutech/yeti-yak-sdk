@@ -56,7 +56,7 @@ CORE_IMAGE_EXTRA_INSTALL += "\
 	"
 
 COMPATIBLE_MACHINE = "^rpi$"
-IMAGE_INSTALL:append = " packagegroup-rpi-test"
+IMAGE_INSTALL:append = " rauc packagegroup-rpi-test"
 
 # Not sure if needed
 DISABLE_SPLASH = "1"
@@ -65,5 +65,11 @@ DISABLE_RPI_BOOT_LOGO = "1"
 IMAGE_INSTALL:remove = " psplash"
 IMAGE_FEATURES:remove = " splash "
 
-WKS_FILE="sdimage-raspberrypi.wks"
-ENABLE_UART="1"
+
+IMAGE_FSTYPES="tar.bz2 ext4 wic.bz2 wic.bmap"
+SDIMG_ROOTFS_TYPE="ext4"
+ENABLE_UART = "1"
+RPI_USE_U_BOOT = "1"
+PREFERRED_PROVIDER_virtual/bootloader = "u-boot"
+
+WKS_FILE = "sdimage-dual-raspberrypi.wks.in"
