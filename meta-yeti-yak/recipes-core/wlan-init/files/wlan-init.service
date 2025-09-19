@@ -9,7 +9,7 @@ ExecStartPre=/bin/sleep 5
 ExecStart=/usr/sbin/rfkill unblock wifi
 ExecStart=/usr/sbin/iw reg set BE
 ExecStart=/sbin/ip link set wlan0 up
-ExecStart=/sbin/wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant/wpa_supplicant-wlan0.conf
+ExecStart=/sbin/wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant.conf
 ExecStart=/sbin/udhcpc -i wlan0
 RemainAfterExit=yes
 

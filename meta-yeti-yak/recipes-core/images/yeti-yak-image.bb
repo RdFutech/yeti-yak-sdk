@@ -69,7 +69,27 @@ IMAGE_FEATURES:remove = " splash "
 IMAGE_FSTYPES="tar.bz2 ext4 wic.bz2 wic.bmap"
 SDIMG_ROOTFS_TYPE="ext4"
 ENABLE_UART = "1"
-RPI_USE_U_BOOT = "1"
-PREFERRED_PROVIDER_virtual/bootloader = "u-boot"
+RPI_USE_U_BOOT = "0"
+#PREFERRED_PROVIDER_virtual/bootloader = "u-boot"
 
 WKS_FILE = "sdimage-dual-raspberrypi.wks.in"
+
+ROOTFS_POSTPROCESS_COMMAND += "write_build_version;"
+
+write_build_version () {
+    install -d ${IMAGE_ROOTFS}${sysconfdir}
+    # Let op: gebruik echte TABs (geen spaties) voor de regels tussen <<-EOF en EOF
+    cat > ${IMAGE_ROOTFS}${sysconfdir}/build_version <<-EOF
+	{
+	  "build_date": "${DATE}",
+	  "build_time": "${TIME}",
+	  "build_datetime": "${DATETIME}",
+	  "image_name": "${IMAGE_BASENAME}",
+	  "image_version": "${PV}",
+	  "machine": "${MACHINE}",
+	  "distro": "${DISTRO}",
+	  "distro_version": "${DISTRO_VERSION}"
+	}
+	EOF
+    chmod 0644 ${IMAGE_ROOTFS}${sysconfdir}/build_version
+}
