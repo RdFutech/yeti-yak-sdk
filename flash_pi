@@ -1,0 +1,124 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+# === Instellingen ===
+# Standaard image-pad (zoals in jouw voorbeeld, relatief t.o.v. huidige dir)
+IMAGE_DEFAULT="/home/kristof/Documents/Github/yeti-yak-scarthgap/yeti-yak-sdk/build/tmp/deploy/images/raspberrypi4/yeti-yak-image-raspberrypi4.rootfs.wic.bz2"
+IMAGE="${1:-$IMAGE_DEFAULT}"
+
+# Hoe lang wachten (in seconden) op het device en op partities
+DEVICE_TIMEOUT=180
+PART_TIMEOUT=60
+
+# === Helpers ===   
+require_cmd() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    echo "Fout: '$1' niet gevonden in \$PATH." >&2
+    exit 1
+  fi
+}
+
+msg() { echo -e "\n==> $*"; }
+
+find_rpi_gadget_dev() {
+  # Zoek een block device met MODEL/VENDOR die lijkt op de RPi mass storage gadget
+  lsblk -dn -o NAME,MODEL,VENDOR,TRAN,RM | awk 'BEGIN{IGNORECASE=1} $2$3 ~ /(gadget|file-stor|mass|rpi|raspberry)/ {print $1; exit}'
+}
+
+mounted_parts_of() {
+  # Geeft gemounte partities van een device terug (één per regel)
+  lsblk -nrpo NAME,MOUNTPOINT "$1" | awk '$2!="" {print $1}'
+}
+
+root_parent_dev() {
+  local root_src
+  root_src="$(findmnt -no SOURCE / || true)"
+  [[ -z "$root_src" ]] && return 0
+  # Bepaal parent disk van root (bijv. nvme0n1 voor nvme0n1p2)
+  lsblk -no PKNAME "$root_src" 2>/dev/null | head -n1
+}
+
+# === Checks ===
+require_cmd rpiboot
+if [[ ! -f "$IMAGE" ]]; then
+  echo "Fout: image niet gevonden: $IMAGE" >&2
+  exit 1
+fi
+
+USE_DD=0
+if ! command -v bmaptool >/dev/null 2>&1; then
+  echo "Waarschuwing: 'bmaptool' niet gevonden; val terug op 'dd'."
+  USE_DD=1
+fi
+
+# === Stap 1: rpiboot draaien ===
+msg "Start rpiboot… (dit kan even duren)"
+sudo rpiboot
+# Wacht tot udev klaar is met device nodes
+if command -v udevadm >/dev/null 2>&1; then
+  sudo udevadm settle || true
+fi
+
+# === Stap 2: wacht tot het mass storage device verschijnt ===
+msg "Zoek naar Raspberry Pi mass-storage gadget…"
+DEV_NAME=""
+for ((i=0; i<DEVICE_TIMEOUT; i++)); do
+  DEV_NAME="$(find_rpi_gadget_dev || true)"
+  if [[ -n "$DEV_NAME" ]]; then
+    break
+  fi
+  sleep 1
+done
+if [[ -z "$DEV_NAME" ]]; then
+  echo "Fout: geen mass-storage gadget gevonden binnen ${DEVICE_TIMEOUT}s." >&2
+  exit 1
+fi
+DEV="/dev/$DEV_NAME"
+msg "Gevonden device: $DEV"
+
+# Veiligheidscheck: niet je eigen root-disk overschrijven
+ROOT_PARENT="$(root_parent_dev || true)"
+if [[ -n "$ROOT_PARENT" && "/dev/$ROOT_PARENT" == "$DEV" ]]; then
+  echo "GEVAAR: Geselecteerde device ($DEV) is de parent van je root filesystem." >&2
+  exit 1
+fi
+
+# === Stap 3: wacht tot partities zichtbaar zijn ===
+msg "Wachten tot partities zichtbaar zijn op $DEV…"
+for ((i=0; i<PART_TIMEOUT; i++)); do
+  if lsblk -nr -o TYPE "$DEV" | grep -q "part"; then
+    break
+  fi
+  sleep 1
+done
+
+# === Stap 4: ontkoppel alleen wat echt gemount is ===
+msg "Ontkoppelen van gemounte partities (indien aanwezig)…"
+mapfile -t MOUNTED < <(mounted_parts_of "$DEV" || true)
+for P in "${MOUNTED[@]:-}"; do
+  echo "  umount $P"
+  sudo umount "$P" || true
+done
+
+# Zeker weten dat alles los is
+for ((i=0; i<10; i++)); do
+  if [[ -z "$(mounted_parts_of "$DEV" || true)" ]]; then
+    break
+  fi
+  sleep 1
+done
+
+# === Stap 5: image schrijven ===
+msg "Schrijf image:\n    $IMAGE\n  -> $DEV"
+if [[ "$USE_DD" -eq 0 ]]; then
+  sudo bmaptool copy "$IMAGE" "$DEV"
+else
+  if [[ "$IMAGE" == *.bz2 ]]; then
+    bunzip2 -c "$IMAGE" | sudo dd of="$DEV" bs=4M conv=fsync status=progress
+  else
+    sudo dd if="$IMAGE" of="$DEV" bs=4M conv=fsync status=progress
+  fi
+fi
+
+sync
+msg "Klaar. Je kunt het device veilig loskoppelen of opnieuw power-cyclen."
