@@ -237,8 +237,8 @@ active_modules:
       server_address: solarlogs.be
       server_port: "1884"
       mode: manual
-      vpn_enable_cmd: "sudo systemctl start openvpn-client@ilucharge2"
-      vpn_disable_cmd: "sudo systemctl stop openvpn-client@ilucharge2"
+      vpn_enable_cmd: "systemctl start openvpn-client@ilucharge2"
+      vpn_disable_cmd: "systemctl stop openvpn-client@ilucharge2"
     connections:
       hardware_info:
       - module_id: yeti_driver

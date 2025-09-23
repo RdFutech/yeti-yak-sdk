@@ -12,7 +12,7 @@ SRC_URI = "file://config-yeti-yak-rpi-pwm.yaml \
            file://everest.service \
            file://everest-rpi.service \
            file://everest-bootlogo.service \
-           file://everest_boot_logo.png \
+           file://ilucharge2_logo.png \
            "
 PV = "0.1"
 
@@ -25,7 +25,7 @@ do_install() {
     install -m 0644 ${WORKDIR}/everest.service ${D}${systemd_system_unitdir}
     install -m 0644 ${WORKDIR}/everest-rpi.service ${D}${systemd_system_unitdir}
     install -m 0644 ${WORKDIR}/everest-bootlogo.service ${D}${systemd_system_unitdir}
-    install -m 0644 ${WORKDIR}/everest_boot_logo.png ${D}${datadir}/everest/everest_boot_logo.png
+    install -m 0644 ${WORKDIR}/ilucharge2_logo.png ${D}${datadir}/everest/ilucharge2_logo.png
     install -m 0644 ${WORKDIR}/config-yeti-yak-pwm.yaml ${D}${sysconfdir}/everest/config-yeti-yak-pwm.yaml
     install -m 0644 ${WORKDIR}/config-yeti-yak-iso.yaml ${D}${sysconfdir}/everest/config-yeti-yak-iso.yaml
     install -m 0644 ${WORKDIR}/config-yeti-yak-rpi-pwm.yaml ${D}${sysconfdir}/everest/config-yeti-yak-rpi-pwm.yaml
