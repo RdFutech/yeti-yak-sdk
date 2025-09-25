@@ -10,7 +10,7 @@ inherit deploy nopackages
 
 do_compile() {
     cat > ${WORKDIR}/cmdline.txt <<'EOF'
-console=tty3 root=/dev/mmcblk0p5 rootfstype=ext4 fsck.repair=yes rootwait noswap fastboot fbcon=logo-pos:center quiet vt.global_cursor_default=0 loglevel=7 ignore_loglevel printk.time=1 systemd.show_status=1
+console=tty3 root=/dev/mmcblk0p2 rootfstype=ext4 fsck.repair=yes rootwait noswap fastboot fbcon=logo-pos:center quiet vt.global_cursor_default=0
 
 EOF
 }

@@ -1,9 +1,11 @@
-/dev/root            /                    auto       defaults                           1  1
-proc                 /proc                proc       defaults                           0  0
-devpts               /dev/pts             devpts     mode=0620,ptmxmode=0666,gid=5      0  0
-tmpfs                /run                 tmpfs      mode=0755,nodev,nosuid,strictatime 0  0
-tmpfs                /var/volatile        tmpfs      defaults                           0  0
-
-/dev/mmcblk0p8       /home                ext4       rw                                 1  1
-/dev/mmcblk0p7       /factory_data        ext4       ro                                 1  1
-/dev/mmcblk0p1       /boot                vfat       ro,sync                            1  1
+/dev/root       /               auto    defaults          1  1
+proc            /proc           proc    defaults          0       0
+LABEL=boot      /boot           vfat    defaults,flush,ro    0       2
+LABEL=data_factory  /factory_data   ext4    defaults,noatime,ro  0       0
+LABEL=data_user  /home           ext4    defaults,noatime,rw  0       0
+tmpfs           /tmp            tmpfs   nosuid,nodev,mode=1777         0       0
+tmpfs           /var/log        tmpfs   nosuid,nodev         0       0
+tmpfs           /var/tmp        tmpfs   nosuid,nodev,mode=1777         0       0
+tmpfs           /var/spool      tmpfs   defaults,noatime,nosuid,nodev,noexec,mode=0755   0  0
+tmpfs           /var/lib/systemd/coredump      tmpfs   defaults,noatime,nosuid,nodev,noexec,mode=0755   0  0
+/home/root/etc/resolv.conf /etc/resolv.conf none defaults,bind,noauto,x-systemd.requires-mounts-for=/mnt/user_data 0 0
